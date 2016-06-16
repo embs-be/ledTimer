@@ -1,0 +1,891 @@
+
+
+Microchip Technology PIC LITE Macro Assembler V1.37 build -260352376 
+                                                                                               Thu Jun 16 16:56:03 2016
+
+Microchip Technology Omniscient Code Generator v1.37 (Free mode) build 201603110536
+     1                           	processor	12F683
+     2                           	opt	pw 120
+     3                           	opt	lm
+     4                           	psect	idataCOMMON,global,class=CODE,delta=2
+     5                           	psect	cinit,global,class=CODE,merge=1,delta=2
+     6                           	psect	bssCOMMON,global,class=COMMON,space=1,delta=1
+     7                           	psect	dataCOMMON,global,class=COMMON,space=1,delta=1
+     8                           	psect	cstackCOMMON,global,class=COMMON,space=1,delta=1
+     9                           	psect	maintext,global,class=CODE,split=1,delta=2
+    10                           	psect	text1,local,class=CODE,merge=1,delta=2
+    11                           	psect	text2,local,class=CODE,merge=1,delta=2
+    12                           	psect	text3,local,class=CODE,merge=1,delta=2
+    13                           	psect	text4,local,class=CODE,merge=1,delta=2
+    14                           	psect	text5,local,class=CODE,merge=1,delta=2
+    15                           	psect	text6,local,class=CODE,merge=1,delta=2
+    16                           	psect	intentry,global,class=CODE,delta=2
+    17                           	psect	functab,global,reloc=256,class=CODE,delta=2
+    18                           	dabs	1,0x7E,2
+    19  0000                     	;# 
+    20  0001                     	;# 
+    21  0002                     	;# 
+    22  0003                     	;# 
+    23  0004                     	;# 
+    24  0005                     	;# 
+    25  000A                     	;# 
+    26  000B                     	;# 
+    27  000C                     	;# 
+    28  000E                     	;# 
+    29  000E                     	;# 
+    30  000F                     	;# 
+    31  0010                     	;# 
+    32  0011                     	;# 
+    33  0012                     	;# 
+    34  0013                     	;# 
+    35  0013                     	;# 
+    36  0014                     	;# 
+    37  0015                     	;# 
+    38  0018                     	;# 
+    39  0019                     	;# 
+    40  001A                     	;# 
+    41  001E                     	;# 
+    42  001F                     	;# 
+    43  0081                     	;# 
+    44  0085                     	;# 
+    45  008C                     	;# 
+    46  008E                     	;# 
+    47  008F                     	;# 
+    48  0090                     	;# 
+    49  0092                     	;# 
+    50  0095                     	;# 
+    51  0095                     	;# 
+    52  0096                     	;# 
+    53  0096                     	;# 
+    54  0099                     	;# 
+    55  009A                     	;# 
+    56  009A                     	;# 
+    57  009B                     	;# 
+    58  009C                     	;# 
+    59  009D                     	;# 
+    60  009E                     	;# 
+    61  009F                     	;# 
+    62                           
+    63                           	psect	idataCOMMON
+    64  0179                     __pidataCOMMON:	
+    65                           
+    66                           ;initializer for _handler
+    67  0179  3401               	retlw	low (fp__waitForKeyPress-fpbase)
+    68  001F                     _ADCON0bits	set	31
+    69  0019                     _CMCON0	set	25
+    70  0005                     _GPIO	set	5
+    71  000B                     _INTCONbits	set	11
+    72  002A                     _GP2	set	42
+    73  00C0                     _SWDTEN	set	192
+    74  00C1                     _WDTPS0	set	193
+    75  00C2                     _WDTPS1	set	194
+    76  00C3                     _WDTPS2	set	195
+    77  00C4                     _WDTPS3	set	196
+    78  009F                     _ANSELbits	set	159
+    79  0081                     _OPTION_REGbits	set	129
+    80  008F                     _OSCCONbits	set	143
+    81  0085                     _TRISIO	set	133
+    82  042A                     _TRISIO2	set	1066
+    83  042B                     _TRISIO3	set	1067
+    84  04AA                     _WPU2	set	1194
+    85                           
+    86                           ; #config settings
+    87  0000                     
+    88                           	psect	cinit
+    89  0010                     start_initialization:	
+    90  0010                     __initialization:	
+    91                           
+    92                           ; Clear objects allocated to COMMON
+    93  0010  01F8               	clrf	__pbssCOMMON& (0+127)
+    94  0011  01F9               	clrf	(__pbssCOMMON+1)& (0+127)
+    95                           
+    96                           ; Initialize objects allocated to COMMON
+    97  0012  2179               	fcall	__pidataCOMMON	;fetch initializer
+    98  0013  00FA               	movwf	__pdataCOMMON& (0+127)
+    99  0014                     end_of_initialization:	
+   100                           ;End of C runtime variable initialization code
+   101                           
+   102  0014                     __end_of__initialization:	
+   103  0014  0183               	clrf	3
+   104  0015  2908               	ljmp	_main	;jump to C main() function
+   105                           
+   106                           	psect	bssCOMMON
+   107  0078                     __pbssCOMMON:	
+   108  0078                     _keyPressed:	
+   109  0078                     	ds	1
+   110  0079                     _ledCount:	
+   111  0079                     	ds	1
+   112                           
+   113                           	psect	dataCOMMON
+   114  007A                     __pdataCOMMON:	
+   115  007A                     _handler:	
+   116  007A                     	ds	1
+   117                           
+   118                           	psect	cstackCOMMON
+   119  0070                     __pcstackCOMMON:	
+   120  0070                     ?_waitForKeyPress:	
+   121  0070                     ?_waitForKeyRelease:	
+   122                           ; 1 bytes @ 0x0
+   123                           
+   124  0070                     ?_ledOff:	
+   125                           ; 1 bytes @ 0x0
+   126                           
+   127  0070                     ?_ledTimer:	
+   128                           ; 1 bytes @ 0x0
+   129                           
+   130  0070                     ?_keyReleased:	
+   131                           ; 1 bytes @ 0x0
+   132                           
+   133  0070                     ?_tc_int:	
+   134                           ; 1 bytes @ 0x0
+   135                           
+   136  0070                     ??_tc_int:	
+   137                           ; 1 bytes @ 0x0
+   138                           
+   139  0070                     ?_main:	
+   140                           ; 1 bytes @ 0x0
+   141                           
+   142                           
+   143                           ; 1 bytes @ 0x0
+   144  0070                     	ds	4
+   145  0074                     ??_waitForKeyRelease:	
+   146  0074                     ??_keyReleased:	
+   147                           ; 1 bytes @ 0x4
+   148                           
+   149                           
+   150                           ; 1 bytes @ 0x4
+   151  0074                     	ds	1
+   152  0075                     waitForKeyRelease@keyBuf:	
+   153                           
+   154                           ; 1 bytes @ 0x5
+   155  0075                     	ds	1
+   156  0076                     ??_waitForKeyPress:	
+   157  0076                     ??_ledOff:	
+   158                           ; 1 bytes @ 0x6
+   159                           
+   160                           
+   161                           ; 1 bytes @ 0x6
+   162  0076                     	ds	1
+   163  0077                     ??_ledTimer:	
+   164                           
+   165                           ; 1 bytes @ 0x7
+   166  0077                     	ds	1
+   167  0078                     ??_main:	
+   168                           
+   169                           	psect	maintext
+   170  0108                     __pmaintext:	
+   171                           ; 1 bytes @ 0x8
+   172 ;;
+   173 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   174 ;;
+   175 ;; *************** function _main *****************
+   176 ;; Defined at:
+   177 ;;		line 92 in file "main.c"
+   178 ;; Parameters:    Size  Location     Type
+   179 ;;		None
+   180 ;; Auto vars:     Size  Location     Type
+   181 ;;		None
+   182 ;; Return value:  Size  Location     Type
+   183 ;;                  1    wreg      void 
+   184 ;; Registers used:
+   185 ;;		wreg, status,2, status,0, pclath, cstack
+   186 ;; Tracked objects:
+   187 ;;		On entry : B00/0
+   188 ;;		On exit  : 0/0
+   189 ;;		Unchanged: 0/0
+   190 ;; Data sizes:     COMMON   BANK0   BANK1
+   191 ;;      Params:         0       0       0
+   192 ;;      Locals:         0       0       0
+   193 ;;      Temps:          0       0       0
+   194 ;;      Totals:         0       0       0
+   195 ;;Total ram usage:        0 bytes
+   196 ;; Hardware stack levels required when called:    4
+   197 ;; This function calls:
+   198 ;;		_ledTimer
+   199 ;;		_waitForKeyPress
+   200 ;; This function is called by:
+   201 ;;		Startup code after reset
+   202 ;; This function uses a non-reentrant model
+   203 ;;
+   204                           
+   205                           
+   206                           ;psect for function _main
+   207  0108                     _main:	
+   208                           
+   209                           ;main.c: 93: CMCON0 = 7;
+   210                           
+   211                           ;incstack = 0
+   212                           ; Regs used in _main: [wreg+status,2+status,0+pclath+cstack]
+   213  0108  3007               	movlw	7
+   214  0109  1283               	bcf	3,5	;RP0=0, select bank0
+   215  010A  0099               	movwf	25	;volatile
+   216                           
+   217                           ;main.c: 100: ANSELbits.ANS = 0;
+   218  010B  30F0               	movlw	-16
+   219  010C  1683               	bsf	3,5	;RP0=1, select bank1
+   220  010D  059F               	andwf	31,f	;volatile
+   221                           
+   222                           ;main.c: 106: ADCON0bits.ADON = 0;
+   223  010E  1283               	bcf	3,5	;RP0=0, select bank0
+   224  010F  101F               	bcf	31,0	;volatile
+   225                           
+   226                           ;main.c: 108: OSCCONbits.IRCF0 = 0;
+   227  0110  1683               	bsf	3,5	;RP0=1, select bank1
+   228  0111  120F               	bcf	15,4	;volatile
+   229                           
+   230                           ;main.c: 109: OSCCONbits.IRCF1 = 0;
+   231  0112  128F               	bcf	15,5	;volatile
+   232                           
+   233                           ;main.c: 110: OSCCONbits.IRCF2 = 0;
+   234  0113  130F               	bcf	15,6	;volatile
+   235                           
+   236                           ;main.c: 112: GPIO = 0x30;
+   237  0114  3030               	movlw	48
+   238  0115  1283               	bcf	3,5	;RP0=0, select bank0
+   239  0116  0085               	movwf	5	;volatile
+   240                           
+   241                           ;main.c: 113: TRISIO = 0;
+   242  0117  1683               	bsf	3,5	;RP0=1, select bank1
+   243  0118  0185               	clrf	5	;volatile
+   244                           
+   245                           ;main.c: 116: OPTION_REGbits.nGPPU = 0;
+   246  0119  1381               	bcf	1,7	;volatile
+   247                           
+   248                           ;main.c: 117: TRISIO2 = 1;
+   249  011A  1505               	bsf	5,2	;volatile
+   250                           
+   251                           ;main.c: 118: TRISIO3 = 1;
+   252  011B  1585               	bsf	5,3	;volatile
+   253                           
+   254                           ;main.c: 119: WPU2 = 1;
+   255  011C  1515               	bsf	21,2	;volatile
+   256                           
+   257                           ;main.c: 121: OPTION_REGbits.INTEDG = 0;
+   258  011D  1301               	bcf	1,6	;volatile
+   259                           
+   260                           ;main.c: 122: INTCONbits.INTF = 0;
+   261  011E  108B               	bcf	11,1	;volatile
+   262                           
+   263                           ;main.c: 123: INTCONbits.INTE = 1;
+   264  011F  160B               	bsf	11,4	;volatile
+   265                           
+   266                           ;main.c: 124: INTCONbits.GIE = 1;
+   267  0120  178B               	bsf	11,7	;volatile
+   268                           
+   269                           ;main.c: 126: SWDTEN = 0;
+   270  0121  1283               	bcf	3,5	;RP0=0, select bank0
+   271  0122  1018               	bcf	24,0	;volatile
+   272  0123                     l76:	
+   273                           ;main.c: 128: while (1) {
+   274                           
+   275  0123  0063               	sleep	;# 
+   276                           
+   277                           ;main.c: 130: handler();
+   278  0124  087A               	movf	_handler,w
+   279  0125  2100               	fcall	fptable
+   280  0126  2923               	goto	l76
+   281  0127                     __end_of_main:	
+   282                           ;main.c: 131: }
+   283                           ;main.c: 133: return;
+   284                           
+   285                           
+   286                           	psect	text1
+   287  014D                     __ptext1:	
+   288 ;; *************** function _ledTimer *****************
+   289 ;; Defined at:
+   290 ;;		line 44 in file "main.c"
+   291 ;; Parameters:    Size  Location     Type
+   292 ;;		None
+   293 ;; Auto vars:     Size  Location     Type
+   294 ;;		None
+   295 ;; Return value:  Size  Location     Type
+   296 ;;                  1    wreg      void 
+   297 ;; Registers used:
+   298 ;;		wreg, status,2, status,0, pclath, cstack
+   299 ;; Tracked objects:
+   300 ;;		On entry : 0/0
+   301 ;;		On exit  : 0/0
+   302 ;;		Unchanged: 0/0
+   303 ;; Data sizes:     COMMON   BANK0   BANK1
+   304 ;;      Params:         0       0       0
+   305 ;;      Locals:         0       0       0
+   306 ;;      Temps:          1       0       0
+   307 ;;      Totals:         1       0       0
+   308 ;;Total ram usage:        1 bytes
+   309 ;; Hardware stack levels used:    1
+   310 ;; Hardware stack levels required when called:    3
+   311 ;; This function calls:
+   312 ;;		_ledOff
+   313 ;; This function is called by:
+   314 ;;		_keyReleased
+   315 ;;		_main
+   316 ;; This function uses a non-reentrant model
+   317 ;;
+   318                           
+   319                           
+   320                           ;psect for function _ledTimer
+   321  014D                     _ledTimer:	
+   322                           
+   323                           ;main.c: 45: if ((keyPressed) || (++ledCount > 7)) {
+   324                           
+   325                           ;incstack = 0
+   326                           ; Regs used in _ledTimer: [wreg+status,2+status,0+pclath+cstack]
+   327  014D  0878               	movf	_keyPressed,w
+   328  014E  1D03               	btfss	3,2
+   329  014F  2958               	goto	l581
+   330  0150  3001               	movlw	1
+   331  0151  00F7               	movwf	??_ledTimer
+   332  0152  0877               	movf	??_ledTimer,w
+   333  0153  07F9               	addwf	_ledCount,f
+   334  0154  3008               	movlw	8
+   335  0155  0279               	subwf	_ledCount,w
+   336  0156  1C03               	skipc
+   337  0157  0008               	return
+   338  0158                     l581:	
+   339                           
+   340                           ;main.c: 46: ledOff();
+   341  0158  2167               	fcall	_ledOff
+   342  0159  0008               	return
+   343  015A                     __end_of_ledTimer:	
+   344                           
+   345                           	psect	text2
+   346  0174                     __ptext2:	
+   347 ;; *************** function _waitForKeyPress *****************
+   348 ;; Defined at:
+   349 ;;		line 78 in file "main.c"
+   350 ;; Parameters:    Size  Location     Type
+   351 ;;		None
+   352 ;; Auto vars:     Size  Location     Type
+   353 ;;		None
+   354 ;; Return value:  Size  Location     Type
+   355 ;;                  1    wreg      void 
+   356 ;; Registers used:
+   357 ;;		wreg, status,2, status,0, pclath, cstack
+   358 ;; Tracked objects:
+   359 ;;		On entry : 0/0
+   360 ;;		On exit  : 0/0
+   361 ;;		Unchanged: 0/0
+   362 ;; Data sizes:     COMMON   BANK0   BANK1
+   363 ;;      Params:         0       0       0
+   364 ;;      Locals:         0       0       0
+   365 ;;      Temps:          0       0       0
+   366 ;;      Totals:         0       0       0
+   367 ;;Total ram usage:        0 bytes
+   368 ;; Hardware stack levels used:    1
+   369 ;; Hardware stack levels required when called:    2
+   370 ;; This function calls:
+   371 ;;		_keyReleased
+   372 ;;		_waitForKeyRelease
+   373 ;; This function is called by:
+   374 ;;		_ledOff
+   375 ;;		_main
+   376 ;; This function uses a non-reentrant model
+   377 ;;
+   378                           
+   379                           
+   380                           ;psect for function _waitForKeyPress
+   381  0174                     _waitForKeyPress:	
+   382                           
+   383                           ;main.c: 79: GPIO = 0;
+   384                           
+   385                           ;incstack = 0
+   386                           ; Regs used in _waitForKeyPress: [wreg+status,2+status,0+pclath+cstack]
+   387  0174  1283               	bcf	3,5	;RP0=0, select bank0
+   388  0175  0185               	clrf	5	;volatile
+   389                           
+   390                           ;main.c: 80: waitForKeyRelease();
+   391  0176  2127               	fcall	_waitForKeyRelease
+   392                           
+   393                           ;main.c: 81: keyReleased();
+   394  0177  215A               	fcall	_keyReleased
+   395  0178  0008               	return
+   396  0179                     __end_of_waitForKeyPress:	
+   397                           
+   398                           	psect	text3
+   399  015A                     __ptext3:	
+   400 ;; *************** function _keyReleased *****************
+   401 ;; Defined at:
+   402 ;;		line 50 in file "main.c"
+   403 ;; Parameters:    Size  Location     Type
+   404 ;;		None
+   405 ;; Auto vars:     Size  Location     Type
+   406 ;;		None
+   407 ;; Return value:  Size  Location     Type
+   408 ;;                  1    wreg      void 
+   409 ;; Registers used:
+   410 ;;		wreg, status,2
+   411 ;; Tracked objects:
+   412 ;;		On entry : 0/0
+   413 ;;		On exit  : 0/0
+   414 ;;		Unchanged: 0/0
+   415 ;; Data sizes:     COMMON   BANK0   BANK1
+   416 ;;      Params:         0       0       0
+   417 ;;      Locals:         0       0       0
+   418 ;;      Temps:          1       0       0
+   419 ;;      Totals:         1       0       0
+   420 ;;Total ram usage:        1 bytes
+   421 ;; Hardware stack levels used:    1
+   422 ;; Hardware stack levels required when called:    1
+   423 ;; This function calls:
+   424 ;;		Nothing
+   425 ;; This function is called by:
+   426 ;;		_waitForKeyPress
+   427 ;; This function uses a non-reentrant model
+   428 ;;
+   429                           
+   430                           
+   431                           ;psect for function _keyReleased
+   432  015A                     _keyReleased:	
+   433                           
+   434                           ;main.c: 52: handler = ledTimer;
+   435                           
+   436                           ;incstack = 0
+   437                           ; Regs used in _keyReleased: [wreg+status,2]
+   438  015A  3002               	movlw	(low (fp__ledTimer-fpbase))& (0+255)
+   439  015B  00F4               	movwf	??_keyReleased
+   440  015C  0874               	movf	??_keyReleased,w
+   441  015D  00FA               	movwf	_handler
+   442                           
+   443                           ;main.c: 55: WDTPS0 = 1;
+   444  015E  1283               	bcf	3,5	;RP0=0, select bank0
+   445  015F  1498               	bsf	24,1	;volatile
+   446                           
+   447                           ;main.c: 56: WDTPS1 = 1;
+   448  0160  1518               	bsf	24,2	;volatile
+   449                           
+   450                           ;main.c: 57: WDTPS2 = 0;
+   451  0161  1198               	bcf	24,3	;volatile
+   452                           
+   453                           ;main.c: 58: WDTPS3 = 1;
+   454  0162  1618               	bsf	24,4	;volatile
+   455                           
+   456                           ;main.c: 59: SWDTEN = 1;
+   457  0163  1418               	bsf	24,0	;volatile
+   458                           
+   459                           ;main.c: 61: ledCount = 0;
+   460  0164  01F9               	clrf	_ledCount
+   461                           
+   462                           ;main.c: 62: keyPressed = 0;
+   463  0165  01F8               	clrf	_keyPressed
+   464  0166  0008               	return
+   465  0167                     __end_of_keyReleased:	
+   466                           
+   467                           	psect	text4
+   468  0167                     __ptext4:	
+   469 ;; *************** function _ledOff *****************
+   470 ;; Defined at:
+   471 ;;		line 30 in file "main.c"
+   472 ;; Parameters:    Size  Location     Type
+   473 ;;		None
+   474 ;; Auto vars:     Size  Location     Type
+   475 ;;		None
+   476 ;; Return value:  Size  Location     Type
+   477 ;;                  1    wreg      void 
+   478 ;; Registers used:
+   479 ;;		wreg, status,2, status,0, pclath, cstack
+   480 ;; Tracked objects:
+   481 ;;		On entry : 0/0
+   482 ;;		On exit  : 0/0
+   483 ;;		Unchanged: 0/0
+   484 ;; Data sizes:     COMMON   BANK0   BANK1
+   485 ;;      Params:         0       0       0
+   486 ;;      Locals:         0       0       0
+   487 ;;      Temps:          1       0       0
+   488 ;;      Totals:         1       0       0
+   489 ;;Total ram usage:        1 bytes
+   490 ;; Hardware stack levels used:    1
+   491 ;; Hardware stack levels required when called:    2
+   492 ;; This function calls:
+   493 ;;		_waitForKeyRelease
+   494 ;; This function is called by:
+   495 ;;		_ledTimer
+   496 ;; This function uses a non-reentrant model
+   497 ;;
+   498                           
+   499                           
+   500                           ;psect for function _ledOff
+   501  0167                     _ledOff:	
+   502                           
+   503                           ;main.c: 31: SWDTEN = 0;
+   504                           
+   505                           ;incstack = 0
+   506                           ; Regs used in _ledOff: [wreg+status,2+status,0+pclath+cstack]
+   507  0167  1283               	bcf	3,5	;RP0=0, select bank0
+   508  0168  1018               	bcf	24,0	;volatile
+   509                           
+   510                           ;main.c: 32: GPIO = 0x30;
+   511  0169  3030               	movlw	48
+   512  016A  0085               	movwf	5	;volatile
+   513                           
+   514                           ;main.c: 34: if (keyPressed) {
+   515  016B  0878               	movf	_keyPressed,w
+   516  016C  1903               	btfsc	3,2
+   517  016D  296F               	goto	l559
+   518                           
+   519                           ;main.c: 35: waitForKeyRelease();
+   520  016E  2127               	fcall	_waitForKeyRelease
+   521  016F                     l559:	
+   522                           
+   523                           ;main.c: 36: }
+   524                           ;main.c: 38: handler = waitForKeyPress;
+   525  016F  3001               	movlw	(low (fp__waitForKeyPress-fpbase))& (0+255)
+   526  0170  00F6               	movwf	??_ledOff
+   527  0171  0876               	movf	??_ledOff,w
+   528  0172  00FA               	movwf	_handler
+   529  0173  0008               	return
+   530  0174                     __end_of_ledOff:	
+   531                           
+   532                           	psect	text5
+   533  0127                     __ptext5:	
+   534 ;; *************** function _waitForKeyRelease *****************
+   535 ;; Defined at:
+   536 ;;		line 65 in file "main.c"
+   537 ;; Parameters:    Size  Location     Type
+   538 ;;		None
+   539 ;; Auto vars:     Size  Location     Type
+   540 ;;  keyBuf          1    5[COMMON] unsigned char 
+   541 ;; Return value:  Size  Location     Type
+   542 ;;                  1    wreg      void 
+   543 ;; Registers used:
+   544 ;;		wreg, status,2, status,0
+   545 ;; Tracked objects:
+   546 ;;		On entry : 0/0
+   547 ;;		On exit  : 0/0
+   548 ;;		Unchanged: 0/0
+   549 ;; Data sizes:     COMMON   BANK0   BANK1
+   550 ;;      Params:         0       0       0
+   551 ;;      Locals:         1       0       0
+   552 ;;      Temps:          1       0       0
+   553 ;;      Totals:         2       0       0
+   554 ;;Total ram usage:        2 bytes
+   555 ;; Hardware stack levels used:    1
+   556 ;; Hardware stack levels required when called:    1
+   557 ;; This function calls:
+   558 ;;		Nothing
+   559 ;; This function is called by:
+   560 ;;		_ledOff
+   561 ;;		_waitForKeyPress
+   562 ;; This function uses a non-reentrant model
+   563 ;;
+   564                           
+   565                           
+   566                           ;psect for function _waitForKeyRelease
+   567  0127                     _waitForKeyRelease:	
+   568                           
+   569                           ;main.c: 66: unsigned char keyBuf;
+   570                           ;main.c: 68: keyBuf = 0xff;
+   571                           
+   572                           ;incstack = 0
+   573                           ; Regs used in _waitForKeyRelease: [wreg+status,2+status,0]
+   574  0127  30FF               	movlw	255
+   575  0128  00F4               	movwf	??_waitForKeyRelease
+   576  0129  0874               	movf	??_waitForKeyRelease,w
+   577  012A  00F5               	movwf	waitForKeyRelease@keyBuf
+   578  012B                     l549:	
+   579                           ;main.c: 70: while (keyBuf) {
+   580                           
+   581  012B  0875               	movf	waitForKeyRelease@keyBuf,w
+   582  012C  1903               	btfsc	3,2
+   583  012D  0008               	return
+   584                           
+   585                           ;main.c: 71: keyBuf <<= 1;
+   586  012E  1003               	clrc
+   587  012F  0DF5               	rlf	waitForKeyRelease@keyBuf,f
+   588                           
+   589                           ;main.c: 72: if (GP2 == 0) keyBuf++;
+   590  0130  1283               	bcf	3,5	;RP0=0, select bank0
+   591  0131  1905               	btfsc	5,2	;volatile
+   592  0132  2937               	goto	l547
+   593  0133  3001               	movlw	1
+   594  0134  00F4               	movwf	??_waitForKeyRelease
+   595  0135  0874               	movf	??_waitForKeyRelease,w
+   596  0136  07F5               	addwf	waitForKeyRelease@keyBuf,f
+   597  0137                     l547:	
+   598                           
+   599                           ;main.c: 73: _delay((unsigned long)((10)*(31000/4000.0)));
+   600  0137  3019               	movlw	25
+   601  0138  00F4               	movwf	??_waitForKeyRelease
+   602  0139                     u77:	
+   603  0139  0BF4               	decfsz	??_waitForKeyRelease,f
+   604  013A  2939               	goto	u77
+   605  013B  0000               	nop
+   606  013C  292B               	goto	l549
+   607  013D                     __end_of_waitForKeyRelease:	
+   608                           
+   609                           	psect	text6
+   610  013D                     __ptext6:	
+   611 ;; *************** function _tc_int *****************
+   612 ;; Defined at:
+   613 ;;		line 84 in file "main.c"
+   614 ;; Parameters:    Size  Location     Type
+   615 ;;		None
+   616 ;; Auto vars:     Size  Location     Type
+   617 ;;		None
+   618 ;; Return value:  Size  Location     Type
+   619 ;;                  1    wreg      void 
+   620 ;; Registers used:
+   621 ;;		None
+   622 ;; Tracked objects:
+   623 ;;		On entry : 0/0
+   624 ;;		On exit  : 0/0
+   625 ;;		Unchanged: 0/0
+   626 ;; Data sizes:     COMMON   BANK0   BANK1
+   627 ;;      Params:         0       0       0
+   628 ;;      Locals:         0       0       0
+   629 ;;      Temps:          4       0       0
+   630 ;;      Totals:         4       0       0
+   631 ;;Total ram usage:        4 bytes
+   632 ;; Hardware stack levels used:    1
+   633 ;; This function calls:
+   634 ;;		Nothing
+   635 ;; This function is called by:
+   636 ;;		Interrupt level 1
+   637 ;; This function uses a non-reentrant model
+   638 ;;
+   639                           
+   640                           
+   641                           ;psect for function _tc_int
+   642  013D                     _tc_int:	
+   643                           
+   644                           ;main.c: 85: if (INTCONbits.INTF) {
+   645  013D  1C8B               	btfss	11,1	;volatile
+   646  013E  2942               	goto	i1l73
+   647                           
+   648                           ;main.c: 86: INTCONbits.INTF = 0;
+   649  013F  108B               	bcf	11,1	;volatile
+   650                           
+   651                           ;main.c: 87: keyPressed = 1;
+   652  0140  01F8               	clrf	_keyPressed
+   653  0141  0AF8               	incf	_keyPressed,f
+   654  0142                     i1l73:	
+   655  0142  0873               	movf	??_tc_int+3,w
+   656  0143  00FF               	movwf	127
+   657  0144  0872               	movf	??_tc_int+2,w
+   658  0145  008A               	movwf	10
+   659  0146  0871               	movf	??_tc_int+1,w
+   660  0147  0084               	movwf	4
+   661  0148  0E70               	swapf	??_tc_int^(0+-128),w
+   662  0149  0083               	movwf	3
+   663  014A  0EFE               	swapf	126,f
+   664  014B  0E7E               	swapf	126,w
+   665  014C  0009               	retfie
+   666  014D                     __end_of_tc_int:	
+   667  0005                     
+   668                           	psect	intentry
+   669  0004                     __pintentry:	
+   670                           ;incstack = 0
+   671                           ; Regs used in _tc_int: []
+   672                           
+   673  0004                     interrupt_function:	
+   674  007E                     saved_w	set	btemp
+   675  0004  00FE               	movwf	btemp
+   676  0005  0E03               	swapf	3,w
+   677  0006  00F0               	movwf	??_tc_int
+   678  0007  0804               	movf	4,w
+   679  0008  00F1               	movwf	??_tc_int+1
+   680  0009  080A               	movf	10,w
+   681  000A  00F2               	movwf	??_tc_int+2
+   682  000B  1283               	bcf	3,5	;RP0=0, select bank0
+   683  000C  087F               	movf	btemp+1,w
+   684  000D  00F3               	movwf	??_tc_int+3
+   685  000E  293D               	ljmp	_tc_int
+   686                           
+   687                           	psect	functab
+   688  0100                     __pfunctab:	
+   689  0100                     __fptable:	
+   690  0100                     fptable:	
+   691  0100  00FF               	movwf	(btemp+1)& (0+127)
+   692  0101  3001               	movlw	high fptable
+   693  0102  008A               	movwf	10
+   694  0103  087F               	movf	(btemp+1)& (0+127),w
+   695  0104  0782               	addwf	2,f
+   696  0105                     fpbase:	
+   697  0105  2905               	goto	fpbase	; Call via a null pointer and you will get stuck here.
+   698  0106                     fp__waitForKeyPress:	
+   699  0106  2974               	ljmp	_waitForKeyPress
+   700  0107                     fp__ledTimer:	
+   701  0107  294D               	ljmp	_ledTimer
+   702  0108                     __end_of__fptable:	
+   703  007E                     btemp	set	126	;btemp
+   704  007E                     wtemp	set	126
+   705  007E                     wtemp0	set	126
+   706  0080                     wtemp1	set	128
+   707  0082                     wtemp2	set	130
+   708  0084                     wtemp3	set	132
+   709  0086                     wtemp4	set	134
+   710  0088                     wtemp5	set	136
+   711  007F                     wtemp6	set	127
+   712  007E                     ttemp	set	126
+   713  007E                     ttemp0	set	126
+   714  0081                     ttemp1	set	129
+   715  0084                     ttemp2	set	132
+   716  0087                     ttemp3	set	135
+   717  007F                     ttemp4	set	127
+   718  007E                     ltemp	set	126
+   719  007E                     ltemp0	set	126
+   720  0082                     ltemp1	set	130
+   721  0086                     ltemp2	set	134
+   722  0080                     ltemp3	set	128
+
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        1
+    BSS         2
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMMON           14      8      11
+    BANK0            80      0       0
+    BANK1            32      0       0
+
+Pointer List with Targets:
+
+    handler	PTR FTN()void  size(1) Largest target is 1
+		 -> ledTimer(), waitForKeyPress(), 
+
+
+Critical Paths under _main in COMMON
+
+    _main->_ledTimer
+    _waitForKeyPress->_waitForKeyRelease
+    _ledTimer->_ledOff
+    _ledOff->_waitForKeyRelease
+
+Critical Paths under _tc_int in COMMON
+
+    None.
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _tc_int in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _tc_int in BANK1
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 0     0      0      30
+                           _ledTimer *
+                    _waitForKeyPress *
+ ---------------------------------------------------------------------------------
+ (1) _waitForKeyPress                                      0     0      0      15
+                        _keyReleased
+                  _waitForKeyRelease
+ ---------------------------------------------------------------------------------
+ (2) _keyReleased                                          1     1      0       0
+                                              4 COMMON     1     1      0
+ ---------------------------------------------------------------------------------
+ (1) _ledTimer                                             1     1      0      15
+                                              7 COMMON     1     1      0
+                             _ledOff
+ ---------------------------------------------------------------------------------
+ (2) _ledOff                                               1     1      0      15
+                                              6 COMMON     1     1      0
+                  _waitForKeyRelease
+ ---------------------------------------------------------------------------------
+ (2) _waitForKeyRelease                                    2     2      0      15
+                                              4 COMMON     2     2      0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 2
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (4) _tc_int                                               4     4      0       0
+                                              0 COMMON     4     4      0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 4
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _ledTimer *
+     _ledOff
+       _waitForKeyRelease
+   _waitForKeyPress *
+     _keyReleased
+     _waitForKeyRelease
+
+ _tc_int (ROOT)
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BANK1               20      0       0       5        0.0%
+BITBANK1            20      0       0       7        0.0%
+SFR1                 0      0       0       2        0.0%
+BITSFR1              0      0       0       2        0.0%
+BANK0               50      0       0       4        0.0%
+BITBANK0            50      0       0       3        0.0%
+SFR0                 0      0       0       1        0.0%
+BITSFR0              0      0       0       1        0.0%
+COMMON               E      8       B       1       78.6%
+BITCOMMON            E      0       0       0        0.0%
+CODE                 0      0       0       0        0.0%
+DATA                 0      0       B       8        0.0%
+ABS                  0      0       B       6        0.0%
+NULL                 0      0       0       0        0.0%
+STACK                0      0       0       2        0.0%
+EEDATA             100      0       0       0        0.0%
+
+
+Microchip Technology PIC Macro Assembler V1.37 build -260352376 
+Symbol Table                                                                                   Thu Jun 16 16:56:03 2016
+
+                         pc 0002                 __CFG_CP$OFF 0000                          l76 0123  
+                        u77 0139                         l547 0137                         l549 012B  
+                       l581 0158                         l559 016F                         _GP2 002A  
+              __CFG_CPD$OFF 0000                         fsr0 0004                        _GPIO 0005  
+                      i1l73 0142                        _WPU2 04AA                ?_keyReleased 0070  
+                      _main 0108                        btemp 007E                        ltemp 007E  
+                      start 000F                        ttemp 007E                        wtemp 007E  
+             __CFG_IESO$OFF 0000                       ?_main 0070               __CFG_WDTE$OFF 0000  
+            __CFG_FCMEN$OFF 0000            ?_waitForKeyPress 0070                       fpbase 0105  
+            __CFG_BOREN$OFF 0000                       pclath 000A                       ltemp0 007E  
+                     ltemp1 0082                       ltemp2 0086                       ltemp3 0080  
+                     ttemp0 007E                       ttemp1 0081                       ttemp2 0084  
+                     ttemp3 0087                       ttemp4 007F                       status 0003  
+                     wtemp0 007E                       wtemp1 0080                       wtemp2 0082  
+                     wtemp3 0084                       wtemp4 0086                       wtemp5 0088  
+                     wtemp6 007F              __CFG_MCLRE$OFF 0000             __initialization 0010  
+              __end_of_main 0127                      ??_main 0078                      _CMCON0 0019  
+                    _WDTPS0 00C1                      _WDTPS1 00C2                      _WDTPS2 00C3  
+                    _WDTPS3 00C4                      _TRISIO 0085                      _SWDTEN 00C0  
+          __end_of__fptable 0108              __CFG_PWRTE$OFF 0000            __end_of_ledTimer 015A  
+                    _ledOff 0167                      _tc_int 013D                      fptable 0100  
+              __pdataCOMMON 007A                      fptotal 0005                      saved_w 007E  
+   __end_of__initialization 0014        __size_of_keyReleased 000D              __pcstackCOMMON 0070  
+            _OPTION_REGbits 0081                  __pmaintext 0108                  __pintentry 0004  
+                   ?_ledOff 0070                     ?_tc_int 0070                     _TRISIO2 042A  
+                   _TRISIO3 042B                   ?_ledTimer 0070           _waitForKeyRelease 0127  
+                _keyPressed 0078          ?_waitForKeyRelease 0070             __size_of_ledOff 000D  
+       ??_waitForKeyRelease 0074                   _ANSELbits 009F             __size_of_tc_int 0010  
+                   _handler 007A                     __ptext1 014D                     __ptext2 0174  
+                   __ptext3 015A                     __ptext4 0167                     __ptext5 0127  
+                   __ptext6 013D                  ??_ledTimer 0077        end_of_initialization 0014  
+ __end_of_waitForKeyRelease 013D    __size_of_waitForKeyPress 0005          fp__waitForKeyPress 0106  
+             __pidataCOMMON 0179              __end_of_ledOff 0174              __end_of_tc_int 014D  
+       start_initialization 0010               ??_keyReleased 0074  __size_of_waitForKeyRelease 0016  
+         ??_waitForKeyPress 0076                    ??_ledOff 0076                    ??_tc_int 0070  
+   waitForKeyRelease@keyBuf 0075                 __pbssCOMMON 0078                   ___latbits 0000  
+         __size_of__fptable 0008           __size_of_ledTimer 000D         __end_of_keyReleased 0167  
+                 __pfunctab 0100           interrupt_function 0004                  _ADCON0bits 001F  
+               _keyReleased 015A                    __fptable 0100                    _ledCount 0079  
+                  _ledTimer 014D             _waitForKeyPress 0174               __size_of_main 001F  
+                _INTCONbits 000B                    intlevel1 0100                  _OSCCONbits 008F  
+   __end_of_waitForKeyPress 0179          __CFG_FOSC$INTOSCIO 0000                 fp__ledTimer 0107  

@@ -6,8 +6,8 @@
 CND_BASEDIR=`pwd`
 # default configuration
 CND_ARTIFACT_DIR_default=dist/default/production
-CND_ARTIFACT_NAME_default=LEDtimer.X.production.hex
-CND_ARTIFACT_PATH_default=dist/default/production/LEDtimer.X.production.hex
+CND_ARTIFACT_NAME_default=ledTimer.production.hex
+CND_ARTIFACT_PATH_default=dist/default/production/ledTimer.production.hex
 CND_PACKAGE_DIR_default=${CND_DISTDIR}/default/package
-CND_PACKAGE_NAME_default=ledtimer.x.tar
-CND_PACKAGE_PATH_default=${CND_DISTDIR}/default/package/ledtimer.x.tar
+CND_PACKAGE_NAME_default=ledtimer.tar
+CND_PACKAGE_PATH_default=${CND_DISTDIR}/default/package/ledtimer.tar

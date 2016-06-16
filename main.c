@@ -36,8 +36,6 @@ void ledOff(void) {
     }
 
     handler = waitForKeyPress;
-    INTCONbits.INTF = 0; // clear the interrupt flag
-    INTCONbits.INTE = 1; // enable the external interrupt
 }
 
 unsigned char ledCount;
@@ -62,9 +60,6 @@ void keyReleased(void) {
 
     ledCount = 0;
     keyPressed = 0;
-    INTCONbits.INTF = 0; // clear the interrupt flag
-    INTCONbits.INTE = 1; // enable the external interrupt
-
 }
 
 void waitForKeyRelease(void) {
@@ -75,7 +70,7 @@ void waitForKeyRelease(void) {
     while (keyBuf) {
         keyBuf <<= 1;
         if (GP2 == 0) keyBuf++;
-        __delay_us(10);
+        __delay_ms(10);
     }
 
 }
@@ -88,7 +83,6 @@ void waitForKeyPress(void) {
 
 void interrupt tc_int(void) { // interrupt function
     if (INTCONbits.INTF) { // if timer flag is set & interrupt enabled
-        INTCONbits.INTE = 0; // disable the external interrupt
         INTCONbits.INTF = 0; // clear the interrupt flag
         keyPressed = 1;
     }
@@ -96,7 +90,7 @@ void interrupt tc_int(void) { // interrupt function
 }
 
 void main(void) {
-
+    CMCON0 = 7;
     /*
     ANS<3:0>: Analog Select bits
     Analog select between analog or digital function on pins AN<3:0>, respectively.
@@ -133,9 +127,7 @@ void main(void) {
 
     while (1) {
         SLEEP();
-
         handler();
-
     }
 
     return;

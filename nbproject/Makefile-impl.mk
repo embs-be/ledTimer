@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=LEDtimer.X
+PROJECTNAME=ledTimer
 
 # Active Configuration
 DEFAULTCONF=default
